@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+set -u
+
+echo "Did you use report?"
+read -r r
+if [ "$r" = "y" ]; then
+  $TODO_FULL_SH command archive
+fi

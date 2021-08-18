@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Add and do: add task and do it right after"
+  curcmd=$(basename "$0")
+  echo "    $curcmd \"THING I HAVE DONE\""
+  echo ""
+  exit
+}
+
+
+id=$("$TODO_FULL_SH" command add "$@"  | grep '^[[:digit:]]' | cut -d' ' -f1)
+
+"$TODO_FULL_SH" "do" "$id"

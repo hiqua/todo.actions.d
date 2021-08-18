@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Lower priority"
+  curcmd=$(basename "$0")
+  echo "    $curcmd ITEM"
+  exit
+}
+
+pri=$(tail -n+"$1" "$TODO_FILE" | head -n1 | cut -c2)
+new_pri="$(echo "$pri" | tr 'A-Y' 'B-Z')"
+
+"$TODO_FULL_SH" "pri" "$1" "$new_pri"

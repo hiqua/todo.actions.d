@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Print todo.txt path"
+  curcmd=$(basename "$0")
+  echo "    $curcmd"
+  exit
+}
+
+printf "%s\n" "$TODO_FILE"

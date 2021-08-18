@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Remove the context(s) of the item"
+  curcmd=$(basename "$0")
+  echo "    $curcmd ITEM"
+    exit
+}
+
+sed -i "${1} s/@[[:alnum:]]*//g" "$TODO_FILE"
+sed -i "${1} s/^[[:space:]]*//" "$TODO_FILE"
+sed -i "${1} s/[[:space:]]*$//" "$TODO_FILE"
+sed -i "${1} s/  */ /g" "$TODO_FILE"

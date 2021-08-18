@@ -1,0 +1,36 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Add and do: add task and do it right after"
+  curcmd=$(basename "$0")
+  echo "    $curcmd \"QUICK NOTE\""
+  exit
+}
+
+
+id=$("$TODO_FULL_SH" command add "+NOTE: $* @work"  | grep '^[[:digit:]]' | cut -d' ' -f1)
+
+"$TODO_FULL_SH" "do" "$id"
+
+
+# sed -i "${1} s/$/ [CANCELLED]$REASON/" "$TODO_FILE" && "$TODO_FULL_SH" "do" "$1"
+
+
+# if "$TODO_SH" command add "$@"; then
+    # figure out the line of what we just added, and prioritize it A
+# fi
+
+
+  # echo "  Customized add:"
+  # echo "    add pri PRIORITY \"THING I NEED TO DO +project @context\""
+  # echo "    add p PRIORITY \"THING I NEED TO DO +project @context\""
+  # echo "      add an item and prioritize it in one step"
+  # echo "    add x \"THING I NEEDED TO DO RIGHT NOW\""
+  # echo "      add an item and mark it as done in one step"
+  # echo ""
+  # exit

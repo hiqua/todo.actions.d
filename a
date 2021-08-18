@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Add item, with priority lower than the current lowest"
+  curcmd=$(basename "$0")
+  echo "    $curcmd \"THING TO DO\""
+  echo ""
+  exit
+}
+
+if  ! echo "$@" | grep -q '([[:alpha:]])' ; then
+  prio="$("$TODO_FULL_SH" command list | awk '$2 ~ /\(.\)/  {print substr($2,2,1)}' | tail -n 1 | tr 'A-T' 'B-U')"
+if [ -n "$prio" ]; then
+    prio="($prio) "
+  fi
+else
+  prio=""
+fi
+
+"$TODO_FULL_SH" command add "$prio""$*"

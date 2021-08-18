@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Lower priority of all items"
+  curcmd=$(basename "$0")
+  echo "    $curcmd ITEM"
+  exit
+}
+
+main(){
+  while read -r line ; do
+    item=$(echo "$line" | cut -f1 -d' ')
+    "$TODO_FULL_SH" lp "$item"
+  done
+}
+
+"$TODO_FULL_SH" -p lsp | head -n -2 | main

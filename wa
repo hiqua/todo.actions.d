@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Work add: add with context @work"
+  curcmd=$(basename "$0")
+  echo "    $curcmd ITEM"
+  exit
+}
+
+export TODO_GLOBAL="$MOBILE_DIR_WORK/TODO"
+"$TODO_FULL_SH" "a" "$*"" @work"

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  List contexts used in list."
+  curcmd=$(basename "$0")
+  echo "    $curcmd"
+  exit
+}
+
+"$TODO_FULL_SH" "list" "$*" | grep -Eo '@([[:alnum:]]|_)*' | sort -u

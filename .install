@@ -1,0 +1,45 @@
+#!/bin/sh
+set -e
+set -u
+
+for f in * ; do
+  if [ -x "$f" ]; then
+    shellcheck "$f"
+  fi
+done
+
+
+if [ "$#" -ne 1 ] || [ ! -d "$1" ]; then
+  echo "Usage: $0 PATH_TO_ACTIONS_DIR"
+  exit 1
+fi
+
+tgt="$1"
+echo "This will overwrite all scripts named the same as the ones in this directory, continue? [N/y]"
+
+read -r answer
+if [ "$answer" != "y" ]; then
+  exit 0
+fi
+
+for f in *; do
+  if [ ! -x "$f" ]; then
+    continue
+  fi
+
+  cp "$f" "$tgt"/
+done
+
+
+# shouldn't be empty
+for f in "$tgt"/* ; do
+  first=1
+  name="$(basename "$f")"
+  if [ ! -f "$name" ]; then
+    if [ "$first" -eq 1 ]; then
+      echo "These do not exist in repository, consider adding them."
+      first=0
+    fi
+    echo "$name"
+  fi
+done

@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+set -u
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Add a @reso: item that begins with '@reso DATE'"
+  curcmd=$(basename "$0")
+  echo "    $curcmd \"RESOLUTION\""
+  echo ""
+  exit
+}
+
+"$TODO_FULL_SH" -T command add "@reso ""$(date --iso-8601) ""$*"
