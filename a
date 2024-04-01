@@ -13,13 +13,22 @@ shift
   exit
 }
 
-if  ! echo "$@" | grep -q '([[:alpha:]])' ; then
-  prio="$("$TODO_FULL_SH" command list | awk '$2 ~ /\(.\)/  {print substr($2,2,1)}' | tail -n 1 | tr 'A-T' 'B-U')"
-if [ -n "$prio" ]; then
-    prio="($prio) "
-  fi
-else
-  prio=""
+# The priority is already there, somewhere.
+if  echo "$@" | grep -q '([[:upper:]])' ; then
+  "$TODO_FULL_SH" command add "$*"
+  return
 fi
 
-"$TODO_FULL_SH" command add "$prio""$*"
+# Might be specified as a sole upper-case letter at the beginning.
+if  echo "$@" | grep -q '^[[:upper:]] ' ; then
+  prio="$(echo "$@" | cut -c 1)"
+  item="$(echo "$@" | cut -c 3-)"
+else
+  # If the priority is not given, use the lower one available.
+  prio="$("$TODO_FULL_SH" command list | awk '$2 ~ /\(.\)/  {print substr($2,2,1)}' | tail -n 1 | tr 'A-T' 'B-U')"
+  item="$*"
+fi
+
+prio="($prio) "
+
+"$TODO_FULL_SH" command add "$prio""$item"
